@@ -176,27 +176,41 @@ def proxy_offer(sid):
 
 
 # ── ROUTE 4: FETCH TRANSCRIPT AFTER CALL ──
+# ── ROUTE 4: FETCH TRANSCRIPT AFTER CALL ──
 @app.route('/session/<sid>/transcript', methods=['GET'])
 def get_transcript(sid):
     try:
         print(f"\n--- FETCHING TRANSCRIPT FOR SESSION: {sid} ---")
         
-        r = requests.get(
-            f"{AETHEX_BASE_URL}/conversations/{sid}",
-            headers=AETHEX_HEADERS,
-            timeout=10
-        )
-        r.raise_for_status()
-        data = r.json()
+        # The Polling Fix: Try up to 5 times to get the transcript
+        max_retries = 5
+        transcript_text = ""
         
-        transcript_text = data.get("transcript_text", "")
+        for attempt in range(max_retries):
+            r = requests.get(
+                f"{AETHEX_BASE_URL}/conversations/{sid}",
+                headers=AETHEX_HEADERS,
+                timeout=10
+            )
+            r.raise_for_status()
+            data = r.json()
+            
+            transcript_text = data.get("transcript_text", "")
+            
+            # If the transcript is ready, break the loop
+            if transcript_text and transcript_text.strip():
+                print(f"✅ Transcript secured on attempt {attempt + 1}")
+                break
+            else:
+                print(f"⏳ Transcript not ready yet (Attempt {attempt + 1}). Waiting 2 seconds...")
+                time.sleep(2)  # Wait 2 seconds before asking Aethex again
+                
         print(f"EXTRACTED TEXT TO SEND TO GROQ: '{transcript_text}'")
             
         return jsonify({"transcript": transcript_text})
     except Exception as e:
         print("ERROR FETCHING TRANSCRIPT:", str(e))
         return jsonify({"error": "Failed to retrieve audio transcript. The session may have timed out."}), 503
-
 
 @app.route('/')
 def home():
