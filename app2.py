@@ -47,7 +47,7 @@ client = Groq(api_key=GROQ_API_KEY)
 def generate_cv():
     data = request.json
     user_input = data.get('text', '')[:3000] 
-    language = data.get('language', 'English')
+    # We keep the language variable for internal reference, but we won't tell the AI to match it.
     name = data.get('name', '[Name]')
     email = data.get('email', '[Email]')
     phone = data.get('phone', '[Phone]')
@@ -55,16 +55,18 @@ def generate_cv():
     if not user_input:
         return jsonify({'error': 'No input provided'}), 400
     
-    ngozi_persona = "You are Ngozi, an elite Technical Recruiter and ATS-Optimization Expert for Nigerian job seekers."
+    # We define Ngozi as a strictly English-speaking expert.
+    ngozi_persona = "You are Ngozi, an elite Technical Recruiter and ATS-Optimization Expert. Your output must ALWAYS be in professional, high-level Business English, regardless of the input language."
     
-    prompt = f"""You are an elite Technical Recruiter and strict ATS-Optimization Expert for Nigerian job seekers.
-The user selected their primary input language as: {language}.
+    prompt = f"""You are an elite Technical Recruiter and strict ATS-Optimization Expert.
+
+CRITICAL INSTRUCTION:
+Translate all provided information into high-level, professional Corporate English. Do NOT output any content in Pidgin, Yoruba, Igbo, or Hausa. The final CV must be in English.
 
 CRITICAL ATS COMPLIANCE RULES:
-1. FIRST-PERSON ONLY: Never use the third person. Write in an implied first-person, action-oriented tone.
-2. MANDATORY DATES: ATS software rejects CVs without dates. If the user does not provide exact dates, you MUST INVENT reasonable recent dates. DO NOT leave dates blank.
-3. SEPARATE EDUCATION & WORK: Correctly identify schools vs. companies. 
-4. HARVARD XYZ BULLETS: Every work experience must have 2-3 bullet points starting with an Action Verb, detailing an achievement, and ending with a metric or result.
+1. FIRST-PERSON ONLY: Write in an implied first-person, action-oriented tone.
+2. MANDATORY DATES: If exact dates are missing, invent realistic recent dates (e.g., "Jan 2022 – Present"). Do not leave dates blank.
+3. HARVARD XYZ BULLETS: Every experience must have 2-3 bullet points: [Action Verb] [Achievement] by [Action taken], resulting in [Result].
 
 User input narrative:
 {user_input}
@@ -72,14 +74,14 @@ User input narrative:
 Return EXACTLY in this format, with no extra text. DO NOT include a cover letter.
 <<NAME>>{name}<</NAME>>
 <<CONTACT>>{email} | {phone}<</CONTACT>>
-<<SUMMARY>>Write a powerful 2-sentence executive summary focusing on total value provided to employers. First-person professional tone only.<</SUMMARY>>
+<<SUMMARY>>Write a powerful 2-sentence executive summary focusing on total value provided.<</SUMMARY>>
 <<EXPERIENCE>>
 Job Title — Company Name, Month Year – Month Year
 • [Action Verb] [Achievement] by [Action taken], resulting in [Positive Metric/Outcome].
 • [Action Verb] [Achievement] by [Action taken], resulting in [Positive Metric/Outcome].
 <</EXPERIENCE>>
 <<EDUCATION>>
-Degree/Qualification — Institution Name, Year (Invent a recent year if not provided)
+Degree/Qualification — Institution Name, Year
 <</EDUCATION>>
 <<SKILLS>>
 High-Value Skill 1 | High-Value Skill 2 | ATS Keyword 3 | ATS Keyword 4 | Hard Skill 5 | Soft Skill 6
