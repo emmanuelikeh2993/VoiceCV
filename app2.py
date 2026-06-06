@@ -95,7 +95,7 @@ Skill 1 | Skill 2 | Skill 3 | Skill 4
 <<COVER>>
 Write a full, professional 3-paragraph cover letter here.
 <</COVER>>"""
-    
+
     # PATCH 2 & 4: Retry Logic & Error Scrubbing
     max_retries = 2
     for attempt in range(max_retries):
@@ -119,43 +119,20 @@ Write a full, professional 3-paragraph cover letter here.
 # ── ROUTE 2: START AETHEX VOICE SESSION ──
 @app.route('/session', methods=['POST'])
 def start_session():
-    # 1. Get the language from the request (default to English)
-    data = request.get_json() or {}
-    user_lang = data.get('language', 'English')
-    
-    print(f"DEBUG: Initializing session for: {user_lang}")
-
     try:
-        # 2. Add the language instruction to your Aethex session configuration
-        # Note: Check your specific Aethex documentation to see if they use 
-        # 'system_prompt', 'initial_prompt', or 'context'. 
-        # This is the industry-standard way to prime voice agents:
-        payload = {
-            "agent_id": AETHEX_AGENT_ID,
-            "session_config": {
-                "system_prompt": f"""You are a professional Nigerian career coach. 
-                The user has selected {user_lang} as their primary language.
-                If they speak in {user_lang}, respond with cultural competence, 
-                warmth, and professional intelligence. Translate their experience 
-                into standard corporate English for the final CV output."""
-            }
-        }
-
-        # 3. Send this configuration to Aethex
+        # PATCH 3: Strict 10-second timeout
         r = requests.post(
             f"{AETHEX_BASE_URL}/conversation/connect",
-            json=payload,
+            json={"agent_id": AETHEX_AGENT_ID},
             headers=AETHEX_HEADERS,
-            timeout=20
+            timeout=10 
         )
         r.raise_for_status()
-        
-        # 4. Return the session data to the frontend
         return jsonify(r.json())
-        
     except Exception as e:
-        print("ERROR STARTING SESSION:", str(e))
-        return jsonify({"error": "Failed to connect to voice engine"}), 500
+        print("AETHEX CONNECT ERROR:", str(e))
+        return jsonify({"error": "Voice service connection failed. Please try again."}), 503
+
 
 # ── ROUTE 3: PROXY WEBRTC OFFER TO AETHEX ──
 @app.route('/session/<sid>/offer', methods=['POST'])
