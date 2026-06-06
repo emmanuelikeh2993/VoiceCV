@@ -112,7 +112,7 @@ Write a full, professional 3-paragraph cover letter here.
                 temperature=0.7,
                 max_tokens=2048,
             )
-            
+
             result = chat_completion.choices[0].message.content
             return jsonify({'cv': result})
         except Exception as e:
@@ -126,22 +126,40 @@ Write a full, professional 3-paragraph cover letter here.
 # ── ROUTE 2: START AETHEX VOICE SESSION ──
 @app.route('/session', methods=['POST'])
 def start_session():
+    data = request.get_json() or {}
+    name = data.get('name', 'User')
+    email = data.get('email', 'N/A')
+    phone = data.get('phone', 'N/A')
+    
+    # This is the "Brain" setup
+    ngozi_persona = f"""You are Ngozi, an expert Nigerian career coach.
+    IMPORTANT: You are already speaking to {name}. 
+    Their contact details are: Email: {email}, Phone: {phone}.
+    Do NOT ask for their name, email, or phone number again. 
+    Acknowledge them by name immediately. Use Nigerian corporate English."""
+    
     try:
-        # PATCH 3: Strict 10-second timeout
+        # You MUST include the persona in the JSON payload
+        payload = {
+            "agent_id": AETHEX_AGENT_ID,
+            "session_config": {
+                "system_prompt": ngozi_persona
+            }
+        }
+        
         r = requests.post(
             f"{AETHEX_BASE_URL}/conversation/connect",
-            json={"agent_id": AETHEX_AGENT_ID},
+            json=payload,
             headers=AETHEX_HEADERS,
             timeout=10 
         )
         r.raise_for_status()
         return jsonify(r.json())
+        
     except Exception as e:
         print("AETHEX CONNECT ERROR:", str(e))
-        return jsonify({"error": "Voice service connection failed. Please try again."}), 503
+        return jsonify({"error": "Voice service connection failed."}), 503# ── ROUTE 3: PROXY WEBRTC OFFER TO AETHEX ──
 
-
-# ── ROUTE 3: PROXY WEBRTC OFFER TO AETHEX ──
 @app.route('/session/<sid>/offer', methods=['POST'])
 def proxy_offer(sid):
     try:

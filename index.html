@@ -416,7 +416,18 @@ function loadExample() {
         setVoiceStatus('connecting', 'Deploying Voice Node...');
         
         try {
-            const res = await fetch(`${SERVER}/session`, { method: 'POST' });
+            // UPDATED: Sending language AND user identification details
+            const res = await fetch(`${SERVER}/session`, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    language: selectedLang || 'English',
+                    name: nameData,
+                    email: emailData,
+                    phone: phoneData 
+                }) 
+            });
+            
             if (!res.ok) throw new Error('Aethex token generation failed');
             const data = await res.json();
             activeSessionId = data.session_id;
@@ -458,7 +469,7 @@ function loadExample() {
             document.getElementById('startCallBtn').disabled = false;
         }
     }
-
+    
     function handleCallCleanup() {
         if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
         if (pc) { pc.close(); pc = null; }
