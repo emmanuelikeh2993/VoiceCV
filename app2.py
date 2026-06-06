@@ -55,9 +55,12 @@ def generate_cv():
 
     if not user_input:
         return jsonify({'error': 'No input provided'}), 400
-        
+    
+    # Add this right before your prompt definition
+    ngozi_persona = "You are Ngozi, an elite Nigerian career coach. You speak with a Nigerian corporate accent, understand local idioms perfectly, and translate all input (including Pidgin, Yoruba, Igbo, and Hausa) into world-class, Lagos-standard corporate English."    
     prompt = f"""You are an elite professional CV writer for Nigerian job seekers.
 The user selected their primary input language as: {language}.
+
 
 CRITICAL TRANSLATION INSTRUCTION:
 - The user has written their work experience in {language}. 
@@ -101,11 +104,15 @@ Write a full, professional 3-paragraph cover letter here.
     for attempt in range(max_retries):
         try:
             chat_completion = client.chat.completions.create(
-                messages=[{"role": "user", "content": prompt}],
+                messages=[
+                    {"role": "system", "content": ngozi_persona},
+                    {"role": "user", "content": prompt}
+                ],
                 model="llama-3.3-70b-versatile",
                 temperature=0.7,
                 max_tokens=2048,
             )
+            
             result = chat_completion.choices[0].message.content
             return jsonify({'cv': result})
         except Exception as e:
