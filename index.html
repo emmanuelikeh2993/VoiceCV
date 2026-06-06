@@ -357,14 +357,40 @@
         document.getElementById('charCount').textContent = val + ' / 1000';
     }
 
-    function loadExample() {
-        document.getElementById('cv-name').value = "Amaka Okonkwo";
-        document.getElementById('cv-email').value = "amaka.okonkwo@gmail.com";
-        document.getElementById('cv-phone').value = "08012345678";
-        document.getElementById('userInput').value = "I finish my OND for Yaba Tech for Business Administration. I don work as customer service rep for GTBank for 1 year, na there I dey take customer complaint and resolve am. I also sabi use Microsoft Excel, Word and PowerPoint well well. I dey find work as administrative officer or customer service manager.";
+function loadExample() {
+        const nameInput = document.getElementById('cv-name');
+        const emailInput = document.getElementById('cv-email');
+        const phoneInput = document.getElementById('cv-phone');
+        const textInput = document.getElementById('userInput');
+
+        if (selectedLang === 'English') {
+            nameInput.value = "David Olatunji";
+            emailInput.value = "david.olatunji@gmail.com";
+            phoneInput.value = "08099998888";
+            textInput.value = "I hold a degree in Computer Science and have 2 years of experience working as a frontend developer at TechCorp. I built responsive web applications using React and JavaScript. I am seeking a mid-level software engineering role.";
+        } else if (selectedLang === 'Pidgin') {
+            nameInput.value = "Amaka Okonkwo";
+            emailInput.value = "amaka.okonkwo@gmail.com";
+            phoneInput.value = "08012345678";
+            textInput.value = "I finish my OND for Yaba Tech for Business Administration. I don work as customer service rep for GTBank for 1 year, na there I dey take customer complaint and resolve am. I also sabi use Microsoft Excel, Word and PowerPoint well well.";
+        } else if (selectedLang === 'Yoruba') {
+            nameInput.value = "Babatunde Adeyemi";
+            emailInput.value = "babs.adeyemi@yahoo.com";
+            phoneInput.value = "07011223344";
+            textInput.value = "Mo kẹkọọ gboye ninu imọ iṣiro (Statistics) ni ile iwe giga University of Ibadan. Mo ti ṣiṣẹ gẹgẹ bi akọwe ati olutọju data ni ile iṣẹ fun ọdun meji. Mo n wa iṣẹ gẹgẹ bi data analyst tabi ofiisa iṣakoso.";
+        } else if (selectedLang === 'Igbo') {
+            nameInput.value = "Chinedu Eze";
+            emailInput.value = "chinedu.eze@gmail.com";
+            phoneInput.value = "08122334455";
+            textInput.value = "Agụchara m akwụkwọ na mahadum UNN, ebe m nwetara nzere B.Sc na Economics. Arụla m ọrụ dịka onye na-ere ahịa na Shoprite afọ atọ. A na m achọ ọrụ gbasara ịzụ ahịa maọbụ ịhazi ego.";
+        } else if (selectedLang === 'Hausa') {
+            nameInput.value = "Abubakar Tariq";
+            emailInput.value = "abu.tariq@gmail.com";
+            phoneInput.value = "08055667788";
+            textInput.value = "Na yi karatun Digiri na farko a fannin Kasuwanci a jami'ar ABU Zaria. Na yi aiki a matsayin mai kula da masu sayayya a bankin First Bank tsawon shekara daya. Ina neman aikin da ya shafi kula da ofis ko gudanarwa.";
+        }
         updateCount();
     }
-
     function openVoiceModal() { document.getElementById('voiceModal').style.display = 'flex'; }
     function closeVoiceModal() { if(!pc) document.getElementById('voiceModal').style.display = 'none'; }
 
