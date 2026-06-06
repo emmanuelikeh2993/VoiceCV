@@ -567,12 +567,11 @@ function loadExample() {
         var experience = extract(raw, 'EXPERIENCE') || '';
         var education = extract(raw, 'EDUCATION') || '';
         var skills = extract(raw, 'SKILLS') || '';
-        var cover = extract(raw, 'COVER') || '';
         
-        // ATS bullet points
+        // ATS bullet points for skills
         var skillTags = skills.split('|').map(s => '<li style="margin-bottom: 4px;">' + s.trim() + '</li>').join('');
         
-        // Semantic HTML for ATS bots (h1, h2, ul)
+        // Strictly ATS Compliant Semantic HTML
         return `
             <div style="text-align: center; margin-bottom: 20px;">
                 <h1 style="margin: 0; font-size: 28px; color: #111;">${name}</h1>
@@ -592,14 +591,9 @@ function loadExample() {
             <ul style="font-size: 14px; line-height: 1.6; padding-left: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 ${skillTags}
             </ul>
-            
-            <div style="page-break-before: always; margin-top: 40px;">
-                <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; font-size: 16px; text-transform: uppercase;">Cover Letter</h2>
-                <p style="font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${cover}</p>
-            </div>
         `;
     }
-
+    
     async function generateCV() {
         var input = document.getElementById('userInput').value.trim();
         var nameData = document.getElementById('cv-name').value.trim();
