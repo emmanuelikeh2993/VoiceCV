@@ -42,11 +42,10 @@ client = Groq(api_key=GROQ_API_KEY)
 
 
 # ── ROUTE 1: TEXT CV GENERATOR ──
+# ── ROUTE 1: TEXT CV GENERATOR ──
 @app.route('/generate', methods=['POST'])
 def generate_cv():
     data = request.json
-    
-    # PATCH 1: Input Sanitization (Hard limit to 3000 characters to prevent context window crash)
     user_input = data.get('text', '')[:3000] 
     language = data.get('language', 'English')
     name = data.get('name', '[Name]')
@@ -56,15 +55,15 @@ def generate_cv():
     if not user_input:
         return jsonify({'error': 'No input provided'}), 400
     
-    # Add this right before your prompt definition
-    ngozi_persona = "You are Ngozi, an elite Nigerian career coach. You speak with a Nigerian corporate accent, understand local idioms perfectly, and translate all input (including Pidgin, Yoruba, Igbo, and Hausa) into world-class, Lagos-standard corporate English."    
+    ngozi_persona = "You are Ngozi, an elite Technical Recruiter and ATS-Optimization Expert for Nigerian job seekers."
+    
     prompt = f"""You are an elite Technical Recruiter and strict ATS-Optimization Expert for Nigerian job seekers.
 The user selected their primary input language as: {language}.
 
 CRITICAL ATS COMPLIANCE RULES:
-1. FIRST-PERSON ONLY: Never use the third person (e.g., NEVER write "Amaka is..."). Write in an implied first-person, action-oriented tone (e.g., "Highly motivated professional with...").
-2. MANDATORY DATES: ATS software rejects CVs without dates. If the user does not provide exact dates, you MUST INVENT reasonable recent dates (e.g., "Jan 2022 – Present" or "2021 – 2023"). DO NOT leave dates blank.
-3. SEPARATE EDUCATION & WORK: Correctly identify schools vs. companies. (e.g., Yaba Tech is an institution for Education. GTBank is a company for Work Experience).
+1. FIRST-PERSON ONLY: Never use the third person. Write in an implied first-person, action-oriented tone.
+2. MANDATORY DATES: ATS software rejects CVs without dates. If the user does not provide exact dates, you MUST INVENT reasonable recent dates. DO NOT leave dates blank.
+3. SEPARATE EDUCATION & WORK: Correctly identify schools vs. companies. 
 4. HARVARD XYZ BULLETS: Every work experience must have 2-3 bullet points starting with an Action Verb, detailing an achievement, and ending with a metric or result.
 
 User input narrative:
@@ -86,6 +85,23 @@ Degree/Qualification — Institution Name, Year (Invent a recent year if not pro
 High-Value Skill 1 | High-Value Skill 2 | ATS Keyword 3 | ATS Keyword 4 | Hard Skill 5 | Soft Skill 6
 <</SKILLS>>"""
 
+    try:
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": ngozi_persona},
+                {"role": "user", "content": prompt}
+            ],
+            model="llama-3.3-70b-versatile",
+            temperature=0.7,
+            max_tokens=2048,
+        )
+
+        result = chat_completion.choices[0].message.content
+        return jsonify({'cv': result})
+    except Exception as e:
+        print(f"GROQ API ERROR: {str(e)}")
+        return jsonify({'error': 'AI processing unavailable.'}), 503
+    
 # ── ROUTE 2: START AETHEX VOICE SESSION ──
 @app.route('/session', methods=['POST'])
 def start_session():
