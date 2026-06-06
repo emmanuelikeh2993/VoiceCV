@@ -58,70 +58,33 @@ def generate_cv():
     
     # Add this right before your prompt definition
     ngozi_persona = "You are Ngozi, an elite Nigerian career coach. You speak with a Nigerian corporate accent, understand local idioms perfectly, and translate all input (including Pidgin, Yoruba, Igbo, and Hausa) into world-class, Lagos-standard corporate English."    
-    prompt = f"""You are an elite professional CV writer for Nigerian job seekers.
+    prompt = f"""You are an elite Technical Recruiter and strict ATS-Optimization Expert for Nigerian job seekers.
 The user selected their primary input language as: {language}.
 
-
-CRITICAL TRANSLATION INSTRUCTION:
-- The user has written their work experience in {language}. 
-- You must completely translate, interpret, and adapt their story into highly professional, industry-standard corporate English. 
-- Do NOT leave any Pidgin, Yoruba, Igbo, or Hausa words in the final output. The final CV must read like a native English speaker wrote it.
-
-CRITICAL DATA TO USE EXACTLY AS PROVIDED:
-Name: {name}
-Email: {email}
-Phone: {phone}
-
-CRITICAL INSTRUCTIONS:
-- Do NOT invent or guess the user's name, email, or phone number. Use the EXACT data provided above.
-- Extract EVERY detail regarding skills, experience, and education from their narrative.
-- Use strong professional action verbs.
-- ALWAYS return the exact format below, no exceptions.
+CRITICAL ATS COMPLIANCE RULES:
+1. FIRST-PERSON ONLY: Never use the third person (e.g., NEVER write "Amaka is..."). Write in an implied first-person, action-oriented tone (e.g., "Highly motivated professional with...").
+2. MANDATORY DATES: ATS software rejects CVs without dates. If the user does not provide exact dates, you MUST INVENT reasonable recent dates (e.g., "Jan 2022 – Present" or "2021 – 2023"). DO NOT leave dates blank.
+3. SEPARATE EDUCATION & WORK: Correctly identify schools vs. companies. (e.g., Yaba Tech is an institution for Education. GTBank is a company for Work Experience).
+4. HARVARD XYZ BULLETS: Every work experience must have 2-3 bullet points starting with an Action Verb, detailing an achievement, and ending with a metric or result.
 
 User input narrative:
 {user_input}
 
-Return EXACTLY in this format:
+Return EXACTLY in this format, with no extra text. DO NOT include a cover letter.
 <<NAME>>{name}<</NAME>>
 <<CONTACT>>{email} | {phone}<</CONTACT>>
-<<SUMMARY>>Write a 3-sentence professional summary here.<</SUMMARY>>
+<<SUMMARY>>Write a powerful 2-sentence executive summary focusing on total value provided to employers. First-person professional tone only.<</SUMMARY>>
 <<EXPERIENCE>>
-Job Title — Company, Duration
-- Bullet point achievement
+Job Title — Company Name, Month Year – Month Year
+• [Action Verb] [Achievement] by [Action taken], resulting in [Positive Metric/Outcome].
+• [Action Verb] [Achievement] by [Action taken], resulting in [Positive Metric/Outcome].
 <</EXPERIENCE>>
 <<EDUCATION>>
-Qualification — Institution, Year
+Degree/Qualification — Institution Name, Year (Invent a recent year if not provided)
 <</EDUCATION>>
 <<SKILLS>>
-Skill 1 | Skill 2 | Skill 3 | Skill 4
-<</SKILLS>>
-<<COVER>>
-Write a full, professional 3-paragraph cover letter here.
-<</COVER>>"""
-
-    # PATCH 2 & 4: Retry Logic & Error Scrubbing
-    max_retries = 2
-    for attempt in range(max_retries):
-        try:
-            chat_completion = client.chat.completions.create(
-                messages=[
-                    {"role": "system", "content": ngozi_persona},
-                    {"role": "user", "content": prompt}
-                ],
-                model="llama-3.3-70b-versatile",
-                temperature=0.7,
-                max_tokens=2048,
-            )
-
-            result = chat_completion.choices[0].message.content
-            return jsonify({'cv': result})
-        except Exception as e:
-            print(f"GROQ API ERROR (Attempt {attempt + 1}): {str(e)}")
-            if attempt < max_retries - 1:
-                time.sleep(1.5) # Wait 1.5 seconds before retrying
-            else:
-                return jsonify({'error': 'AI processing temporarily unavailable. Please try again.'}), 503
-
+High-Value Skill 1 | High-Value Skill 2 | ATS Keyword 3 | ATS Keyword 4 | Hard Skill 5 | Soft Skill 6
+<</SKILLS>>"""
 
 # ── ROUTE 2: START AETHEX VOICE SESSION ──
 @app.route('/session', methods=['POST'])
