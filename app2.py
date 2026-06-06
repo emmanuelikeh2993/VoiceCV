@@ -57,7 +57,12 @@ def generate_cv():
         return jsonify({'error': 'No input provided'}), 400
         
     prompt = f"""You are an elite professional CV writer for Nigerian job seekers.
-The user has provided their raw experience primarily in: {language}.
+The user selected their primary input language as: {language}.
+
+CRITICAL TRANSLATION INSTRUCTION:
+- The user has written their work experience in {language}. 
+- You must completely translate, interpret, and adapt their story into highly professional, industry-standard corporate English. 
+- Do NOT leave any Pidgin, Yoruba, Igbo, or Hausa words in the final output. The final CV must read like a native English speaker wrote it.
 
 CRITICAL DATA TO USE EXACTLY AS PROVIDED:
 Name: {name}
@@ -66,8 +71,7 @@ Phone: {phone}
 
 CRITICAL INSTRUCTIONS:
 - Do NOT invent or guess the user's name, email, or phone number. Use the EXACT data provided above.
-- If the input language is Pidgin, Yoruba, Igbo, or Hausa, completely translate and adapt it to highly professional, industry-standard corporate English.
-- Extract EVERY detail regarding skills, experience, and education.
+- Extract EVERY detail regarding skills, experience, and education from their narrative.
 - Use strong professional action verbs.
 - ALWAYS return the exact format below, no exceptions.
 
@@ -91,7 +95,7 @@ Skill 1 | Skill 2 | Skill 3 | Skill 4
 <<COVER>>
 Write a full, professional 3-paragraph cover letter here.
 <</COVER>>"""
-
+    
     # PATCH 2 & 4: Retry Logic & Error Scrubbing
     max_retries = 2
     for attempt in range(max_retries):
