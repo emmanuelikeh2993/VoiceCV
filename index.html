@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VoiceCV AI — Speak Your Story. Build Your Career.</title>
+    <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -416,7 +417,6 @@ function loadExample() {
         setVoiceStatus('connecting', 'Deploying Voice Node...');
         
         try {
-            // UPDATED: Sending language AND user identification details
             const res = await fetch(`${SERVER}/session`, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -568,19 +568,36 @@ function loadExample() {
         var education = extract(raw, 'EDUCATION') || '';
         var skills = extract(raw, 'SKILLS') || '';
         var cover = extract(raw, 'COVER') || '';
-        var skillTags = skills.split('|').map(s => '<span class="cv-skill-tag">' + s.trim() + '</span>').join('');
         
-        return '<div class="cv-name">' + name + '</div>' +
-            '<div class="cv-contact">' + contact + '</div>' +
-            '<div class="cv-section-label">Professional Summary</div>' +
-            '<div class="cv-body">' + summary + '</div>' +
-            '<div class="cv-section-label">Work Experience</div>' +
-            '<div class="cv-body">' + experience + '</div>' +
-            '<div class="cv-section-label">Education</div>' +
-            '<div class="cv-body">' + education + '</div>' +
-            '<div class="cv-section-label">Skills</div>' +
-            '<div class="cv-skills-wrap">' + skillTags + '</div>' +
-            '<div class="cv-cover"><div class="cv-section-label">Cover Letter</div><div class="cv-body">' + cover + '</div></div>';
+        // ATS bullet points
+        var skillTags = skills.split('|').map(s => '<li style="margin-bottom: 4px;">' + s.trim() + '</li>').join('');
+        
+        // Semantic HTML for ATS bots (h1, h2, ul)
+        return `
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h1 style="margin: 0; font-size: 28px; color: #111;">${name}</h1>
+                <p style="margin: 5px 0; color: #555; font-size: 14px;">${contact}</p>
+            </div>
+            
+            <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; margin-top: 20px; font-size: 16px; text-transform: uppercase;">Professional Summary</h2>
+            <p style="font-size: 14px; line-height: 1.6;">${summary}</p>
+            
+            <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; margin-top: 20px; font-size: 16px; text-transform: uppercase;">Work Experience</h2>
+            <div style="font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${experience}</div>
+            
+            <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; margin-top: 20px; font-size: 16px; text-transform: uppercase;">Education</h2>
+            <div style="font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${education}</div>
+            
+            <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; margin-top: 20px; font-size: 16px; text-transform: uppercase;">Core Competencies</h2>
+            <ul style="font-size: 14px; line-height: 1.6; padding-left: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                ${skillTags}
+            </ul>
+            
+            <div style="page-break-before: always; margin-top: 40px;">
+                <h2 style="border-bottom: 2px solid #111; padding-bottom: 5px; font-size: 16px; text-transform: uppercase;">Cover Letter</h2>
+                <p style="font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${cover}</p>
+            </div>
+        `;
     }
 
     async function generateCV() {
@@ -638,16 +655,19 @@ function loadExample() {
     }
 
     function downloadWordDoc() {
-        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>VoiceCV Export</title><style>body { font-family: 'Arial', sans-serif; } .cv-name { font-size: 24pt; font-weight: bold; margin-bottom: 5pt; } .cv-contact { font-size: 11pt; color: #555; margin-bottom: 20pt; border-bottom: 1px solid #ccc; padding-bottom: 10pt; } .cv-section-label { font-size: 12pt; font-weight: bold; text-transform: uppercase; margin-top: 15pt; margin-bottom: 5pt; color: #333; } .cv-body { font-size: 11pt; line-height: 1.5; margin-bottom: 15pt; } .cv-skill-tag { display: inline-block; background: #eee; padding: 3px 8px; margin: 2px; border-radius: 3px; font-size: 10pt; }</style></head><body>";
+        // Wrap the semantic CV in clean HTML for the converter
+        const header = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>VoiceCV Export</title><style>body { font-family: 'Arial', sans-serif; color: #000; }</style></head><body>";
         const footer = "</body></html>";
         const sourceHTML = header + document.getElementById("cvOutput").innerHTML + footer;
         
-        const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-        const fileDownload = document.createElement("a");
+        // Convert to a true modern .docx Blob
+        const converted = htmlDocx.asBlob(sourceHTML);
         
+        // Trigger download
+        const fileDownload = document.createElement("a");
         document.body.appendChild(fileDownload);
-        fileDownload.href = source;
-        fileDownload.download = 'My_Professional_VoiceCV.doc';
+        fileDownload.href = URL.createObjectURL(converted);
+        fileDownload.download = 'My_Professional_VoiceCV.docx'; 
         fileDownload.click();
         document.body.removeChild(fileDownload);
     }
