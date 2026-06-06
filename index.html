@@ -6,13 +6,38 @@
     <title>VoiceCV AI — Speak Your Story. Build Your Career.</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --orange: #e84a0c; --orange-dark: #c43d09; --orange-dim: rgba(232, 74, 12, 0.12); --bg: #080808; --surface: #111111; --surface2: #1a1a1a; --border: #1f1f1f; --text: #f0f0f0; --muted: #555555; --green: #22c55e; }
+        :root {
+            --orange: #e84a0c;
+            --orange-dark: #c43d09;
+            --orange-dim: rgba(232, 74, 12, 0.12);
+            --bg: #080808;
+            --surface: #111111;
+            --surface2: #1a1a1a;
+            --border: #1f1f1f;
+            --text: #f0f0f0;
+            --muted: #555555;
+            --green: #22c55e;
+        }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        /* Add this new style for your Premium Billing Badge */
-        .premium-badge { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 10px 0; padding: 10px; background: var(--orange-dim); border: 1px solid var(--orange); color: var(--orange); border-radius: 12px; font-weight: 700; font-size: 14px; }
-        /* ... Keep all your existing CSS ... */
-        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(8,8,8,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); height: 64px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(8,8,8,0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            height: 64px;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
         .logo { display: flex; align-items: center; gap: 10px; }
         .logo-text { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
         .logo-text span { color: var(--orange); }
@@ -20,21 +45,37 @@
         .nav-live { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
         .live-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 24px 80px; position: relative; overflow: hidden; }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
         .glow { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(232,74,12,0.1) 0%, transparent 65%); pointer-events: none; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); padding: 7px 18px; border-radius: 999px; font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); padding: 7px 18px; border-radius: 999px; font-size: 12px; color: var(--muted); margin-bottom: 32px; }
         .hero h1 { font-size: clamp(40px, 7vw, 80px); font-weight: 900; line-height: 1.0; letter-spacing: -3px; margin-bottom: 24px; max-width: 820px; }
         .hero h1 em { font-style: normal; color: var(--orange); }
         .hero-sub { font-size: 17px; color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 52px; }
+        
         .app { max-width: 880px; margin: 0 auto; padding: 80px 24px; }
         .app-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
         .tag { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
         .app-header h2 { font-size: 32px; font-weight: 900; letter-spacing: -1px; }
+        
         .voice-mode-btn { background: var(--surface2); border: 1px solid var(--orange); color: var(--orange); padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
         .voice-mode-btn:hover { background: var(--orange); color: white; }
+        
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .info-input { width: 100%; padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 14px; outline: none; transition: border-color 0.3s; }
         .info-input:focus { border-color: var(--orange); }
+        .info-input::placeholder { color: var(--muted); }
+
         .input-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 12px; transition: border-color 0.3s, box-shadow 0.3s; }
         .input-wrap:focus-within { border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-dim); }
         .input-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
@@ -44,11 +85,18 @@
         .pill { padding: 5px 14px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .pill:hover { border-color: var(--orange); color: var(--orange); }
         .pill.active { background: var(--orange); border-color: var(--orange); color: white; }
+        
         textarea { width: 100%; background: transparent; border: none; padding: 20px; color: var(--text); font-size: 15px; line-height: 1.7; resize: none; height: 170px; outline: none; font-family: inherit; }
+        textarea::placeholder { color: var(--muted); }
         .input-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); }
         .char-count { font-size: 12px; color: var(--muted); }
-        .try-example { background: none; border: none; color: var(--orange); font-size: 12px; cursor: pointer; font-weight: 600; }
+        .try-example { background: none; border: none; color: var(--orange); font-size: 12px; cursor: pointer; font-weight: 600; transition: opacity 0.2s; }
+        .try-example:hover { opacity: 0.7; }
+        
         .gen-btn { width: 100%; padding: 18px; background: var(--orange); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; margin-bottom: 32px; }
+        .gen-btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
+        .gen-btn:disabled { background: #2a2a2a; color: var(--muted); cursor: not-allowed; transform: none; }
+        
         .loader { display: none; text-align: center; padding: 60px 20px; }
         .loader.show { display: block; }
         .spinner-ring { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
@@ -59,6 +107,7 @@
         .step.active { color: var(--orange); }
         .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
         .step.active .step-dot { background: var(--orange); }
+        
         .output-wrap { display: none; margin-top: 16px; }
         .output-wrap.show { display: block; }
         .output-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
@@ -68,12 +117,36 @@
         .action-btn.outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         .action-btn.outline:hover { border-color: var(--orange); color: var(--orange); }
         .action-btn.solid { background: #0056b3; border: 1px solid #0056b3; color: white; }
-        .cv-box { background: #ffffff; color: #000000; border: 1px solid var(--border); border-radius: 12px; padding: 40px; outline: none; }
+        .action-btn.solid:hover { background: #004494; }
+        
+        .cv-box { background: #ffffff; color: #000000; border: 1px solid var(--border); border-radius: 12px; padding: 40px; outline: none; transition: box-shadow 0.3s; }
+        .cv-box:focus { box-shadow: 0 0 0 3px rgba(232, 74, 12, 0.3); }
+        
         .reset-bar { display: none; text-align: center; margin-top: 24px; }
         .reset-bar.show { display: block; }
-        .reset-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+        .reset-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .reset-btn:hover { border-color: var(--orange); color: var(--orange); }
         
+        /* --- LANDING PAGE EXTRAS --- */
+        .extras-section { max-width: 1000px; margin: 0 auto; padding: 60px 24px 100px; border-top: 1px solid var(--border); }
+        .section-title { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 48px; letter-spacing: -0.5px; }
+        
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 80px; }
+        .feature-card { background: var(--surface); border: 1px solid var(--border); padding: 32px; border-radius: 16px; text-align: center; transition: transform 0.2s; }
+        .feature-card:hover { transform: translateY(-5px); border-color: var(--orange); }
+        .feature-icon { font-size: 32px; margin-bottom: 16px; }
+        .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .feature-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+        .faq-grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+        .faq-q { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .faq-a { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+        footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+
         .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-backdrop.show { display: flex; }
         .voice-card { background: #111; border: 1px solid #1f1f1f; border-radius: 24px; padding: 40px; width: 440px; text-align: center; position: relative; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #444; font-size: 20px; cursor: pointer; }
         .mic-ring { width: 100px; height: 100px; border-radius: 50%; background: #1a1a1a; border: 2px solid #1f1f1f; display: flex; align-items: center; justify-content: center; margin: 32px auto; transition: all 0.3s; }
@@ -86,6 +159,13 @@
         .voice-btn.primary { background: var(--orange); color: white; }
         .voice-btn.secondary { background: transparent; border: 1px solid #ef4444; color: #ef4444; }
         .voice-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+        .cv-name { font-size: 26px; font-weight: 900; color: #111; margin-bottom: 6px; }
+        .cv-contact { font-size: 13px; color: #555; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #ddd; }
+        .cv-section-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange-dark); margin-bottom: 10px; margin-top: 24px; }
+        .cv-body { font-size: 14px; line-height: 1.8; color: #333; white-space: pre-wrap; }
+        .cv-skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .cv-skill-tag { background: #f0f0f0; border: 1px solid #ccc; padding: 5px 14px; border-radius: 4px; font-size: 12px; color: #333; }
     </style>
 </head>
 <body>
@@ -101,7 +181,6 @@
 <section class="hero">
     <div class="glow"></div>
     <div class="hero-badge"><div class="live-dot"></div>Built for The Artificial Future Hackathon</div>
-    <div class="premium-badge">✨ Ngozi AI Premium Service | ₦300 Per Usage</div>
     <h1>Your Story.<br><em>Your Career.</em></h1>
     <p class="hero-sub">Speak or type your experience in Pidgin, Yoruba, Igbo, Hausa or English — get a clean CV instantly.</p>
 </section>
@@ -156,10 +235,10 @@
     
     <div class="output-wrap" id="outputWrap">
         <div class="output-header">
-            <div class="output-title">Your Professional CV ✓</div>
+            <div class="output-title">Your Professional CV ✓ <span style="font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 10px;">(Click anywhere to edit)</span></div>
             <div class="output-actions">
-                <button class="action-btn outline" onclick="copyCV()">Copy</button>
-                <button class="action-btn solid" onclick="downloadWordDoc()">Download</button>
+                <button class="action-btn outline" onclick="copyCV()">Copy HTML</button>
+                <button class="action-btn solid" onclick="downloadWordDoc()">Download as Word Doc</button>
             </div>
         </div>
         <div class="cv-box" id="cvOutput" contenteditable="true"></div>
@@ -168,13 +247,71 @@
     <div class="reset-bar" id="resetBar"><button class="reset-btn" onclick="resetApp()">← Clear & Start Over</button></div>
 </section>
 
-<!-- ... Keep Footer and FAQ sections ... -->
+<section class="extras-section">
+    <h3 class="section-title">How VoiceCV Works</h3>
+    <div class="grid-3">
+        <div class="feature-card">
+            <div class="feature-icon">🎙️</div>
+            <h4 class="feature-title">1. Tell Your Story</h4>
+            <p class="feature-text">Don't stress about corporate jargon. Speak naturally in English, Pidgin, or local languages about what you do best.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h4 class="feature-title">2. AI Translation</h4>
+            <p class="feature-text">Our engine acts as a semantic translator, extracting your core skills and mapping them to industry-standard terminology.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📄</div>
+            <h4 class="feature-title">3. Export & Apply</h4>
+            <p class="feature-text">Instantly review your generated profile, make any quick edits on our live canvas, and download it as an ATS-ready Word document.</p>
+        </div>
+    </div>
+
+    <h3 class="section-title">Built For Every Hustle</h3>
+    <div class="grid-3">
+        <div class="feature-card">
+            <div class="feature-icon">👨‍🔧</div>
+            <h4 class="feature-title">The Artisan & Freelancer</h4>
+            <p class="feature-text">You have years of hands-on experience but no formal resume. VoiceCV turns your project history into a professional portfolio.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎓</div>
+            <h4 class="feature-title">The Recent Graduate</h4>
+            <p class="feature-text">Struggling to fill a blank page? Talk to our AI about your coursework and projects, and watch it structure your entry-level CV.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h4 class="feature-title">The Career Transitioner</h4>
+            <p class="feature-text">Pivot faster. Explain your past roles, and our AI will highlight the transferable skills needed for your new industry.</p>
+        </div>
+    </div>
+
+    <h3 class="section-title">Frequently Asked Questions</h3>
+    <div class="faq-grid">
+        <div class="faq-item">
+            <div class="faq-q">Will this CV pass Applicant Tracking Systems (ATS)?</div>
+            <div class="faq-a">Yes. Unlike complex PDF templates that confuse recruiting software, VoiceCV exports a clean, hierarchically structured document optimized for ATS parsers. We focus on keyword extraction, not flashy graphics.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Which languages are fully supported?</div>
+            <div class="faq-a">Our architecture perfectly handles English and Nigerian Pidgin. We have built the UI to scale for Yoruba, Igbo, and Hausa, but are currently navigating the limitations of global Speech-to-Text APIs for local languages. Text input works universally.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Is my personal data stored?</div>
+            <div class="faq-a">No. Your voice and text data are processed entirely in-memory during the session. We do not store your personal details, email, or resume history in any database. Once you refresh the page, the data is gone.</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div>Built with grit for The Artificial Future Hackathon | VoiceCV AI &copy; 2026</div>
+</footer>
 
 <div class="modal-backdrop" id="voiceModal">
     <div class="voice-card">
         <button class="close-modal" onclick="closeVoiceModal()">×</button>
-        <h3 style="font-size:20px; font-weight:800; margin-bottom:6px;">Talk to Ngozi</h3>
-        <p style="font-size:13px; color:#666;">Processing CV for: <strong id="prep-name">User</strong></p>
+        <h3 style="font-size:20px; font-weight:800; margin-bottom:6px;">Talk to CVA</h3>
+        <p style="font-size:13px; color:#666;">Your conversation transforms automatically into a complete CV</p>
         
         <div class="mic-ring" id="micRing">
             <span style="font-size:36px;">🎙️</span>
@@ -182,7 +319,7 @@
         
         <div class="status-badge" id="statusBadge">Ready to Connect</div>
         
-        <button class="voice-btn primary" id="startCallBtn" onclick="startVoiceCall()">Pay ₦300 & Connect</button>
+        <button class="voice-btn primary" id="startCallBtn" onclick="startVoiceCall()">Connect Voice Session</button>
         <button class="voice-btn secondary" id="endCallBtn" onclick="endVoiceCall()" disabled>Finish & Generate CV</button>
     </div>
 </div>
@@ -192,54 +329,114 @@
 <script>
     const SERVER = "https://voicecv.onrender.com";
     let selectedLang = 'English';
+    let generatedCVRaw = '';
+    let stepInterval;
+    
     let pc = null;
     let micStream = null;
     let activeSessionId = null;
 
-    function openVoiceModal() {
-        const name = document.getElementById('cv-name').value.trim();
-        if(!name) { alert('Please enter your Name first!'); return; }
-        document.getElementById('prep-name').innerText = name;
-        document.getElementById('voiceModal').style.display = 'flex';
+    function updatePlaceholder(lang) {
+        const input = document.getElementById('userInput');
+        if (lang === "Pidgin") input.placeholder = "Abeg, tell us wetin you don do for work, where you work, and wetin you sabi do well well...";
+        else if (lang === "Yoruba") input.placeholder = "Sọ fún wa nípa iṣẹ́ rẹ, ibi tí o ti ṣiṣẹ́, àti àwọn nǹkan tí o mọ̀ pé o le ṣe dáadáa...";
+        else if (lang === "Igbo") input.placeholder = "Biko, gwa anyi gbasara oru gi, ebe i ruru oru, na ihe i maara eme nke oma...";
+        else if (lang === "Hausa") input.placeholder = "Don Allah, fada mana game da aikin ka, inda ka yi aiki, da abin da ka iya sosai...";
+        else input.placeholder = "Type your experience here or tap Voice Mode above...";
     }
-
-    function closeVoiceModal() { if(!pc) document.getElementById('voiceModal').style.display = 'none'; }
 
     function setLang(btn) {
         document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedLang = btn.textContent;
+        updatePlaceholder(selectedLang);
     }
 
     function updateCount() {
-        document.getElementById('charCount').textContent = document.getElementById('userInput').value.length + ' / 1000';
+        const val = document.getElementById('userInput').value.length;
+        document.getElementById('charCount').textContent = val + ' / 1000';
+    }
+
+function loadExample() {
+        const nameInput = document.getElementById('cv-name');
+        const emailInput = document.getElementById('cv-email');
+        const phoneInput = document.getElementById('cv-phone');
+        const textInput = document.getElementById('userInput');
+
+        if (selectedLang === 'English') {
+            nameInput.value = "David Olatunji";
+            emailInput.value = "david.olatunji@gmail.com";
+            phoneInput.value = "08099998888";
+            textInput.value = "I hold a degree in Computer Science and have 2 years of experience working as a frontend developer at TechCorp. I built responsive web applications using React and JavaScript. I am seeking a mid-level software engineering role.";
+        } else if (selectedLang === 'Pidgin') {
+            nameInput.value = "Amaka Okonkwo";
+            emailInput.value = "amaka.okonkwo@gmail.com";
+            phoneInput.value = "08012345678";
+            textInput.value = "I finish my OND for Yaba Tech for Business Administration. I don work as customer service rep for GTBank for 1 year, na there I dey take customer complaint and resolve am. I also sabi use Microsoft Excel, Word and PowerPoint well well.";
+        } else if (selectedLang === 'Yoruba') {
+            nameInput.value = "Babatunde Adeyemi";
+            emailInput.value = "babs.adeyemi@yahoo.com";
+            phoneInput.value = "07011223344";
+            textInput.value = "Mo kẹkọọ gboye ninu imọ iṣiro (Statistics) ni ile iwe giga University of Ibadan. Mo ti ṣiṣẹ gẹgẹ bi akọwe ati olutọju data ni ile iṣẹ fun ọdun meji. Mo n wa iṣẹ gẹgẹ bi data analyst tabi ofiisa iṣakoso.";
+        } else if (selectedLang === 'Igbo') {
+            nameInput.value = "Chinedu Eze";
+            emailInput.value = "chinedu.eze@gmail.com";
+            phoneInput.value = "08122334455";
+            textInput.value = "Agụchara m akwụkwọ na mahadum UNN, ebe m nwetara nzere B.Sc na Economics. Arụla m ọrụ dịka onye na-ere ahịa na Shoprite afọ atọ. A na m achọ ọrụ gbasara ịzụ ahịa maọbụ ịhazi ego.";
+        } else if (selectedLang === 'Hausa') {
+            nameInput.value = "Abubakar Tariq";
+            emailInput.value = "abu.tariq@gmail.com";
+            phoneInput.value = "08055667788";
+            textInput.value = "Na yi karatun Digiri na farko a fannin Kasuwanci a jami'ar ABU Zaria. Na yi aiki a matsayin mai kula da masu sayayya a bankin First Bank tsawon shekara daya. Ina neman aikin da ya shafi kula da ofis ko gudanarwa.";
+        }
+        updateCount();
+    }
+    function openVoiceModal() { document.getElementById('voiceModal').style.display = 'flex'; }
+    function closeVoiceModal() { if(!pc) document.getElementById('voiceModal').style.display = 'none'; }
+
+    function setVoiceStatus(state, label) {
+        const badge = document.getElementById('statusBadge');
+        badge.className = 'status-badge ' + state;
+        badge.textContent = label;
+        document.getElementById('micRing').classList.toggle('active', state === 'connected');
     }
 
     async function startVoiceCall() {
-        const name = document.getElementById('cv-name').value.trim();
-        const email = document.getElementById('cv-email').value.trim();
-        const phone = document.getElementById('cv-phone').value.trim();
+        var nameData = document.getElementById('cv-name').value.trim();
+        var emailData = document.getElementById('cv-email').value.trim();
+        var phoneData = document.getElementById('cv-phone').value.trim();
 
-        if (!name || !email || !phone) {
-            alert('Please fill out Basic Details first.');
+        if (!nameData || !emailData || !phoneData) {
+            alert('Please fill out your Basic Details (Name, Email, Phone) on the main page before starting the voice session.');
+            closeVoiceModal();
             return;
         }
 
         document.getElementById('startCallBtn').disabled = true;
+        setVoiceStatus('connecting', 'Deploying Voice Node...');
         
         try {
+            // UPDATED: Sending language AND user identification details
             const res = await fetch(`${SERVER}/session`, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ language: selectedLang, name, email, phone }) 
+                body: JSON.stringify({ 
+                    language: selectedLang || 'English',
+                    name: nameData,
+                    email: emailData,
+                    phone: phoneData 
+                }) 
             });
             
+            if (!res.ok) throw new Error('Aethex token generation failed');
             const data = await res.json();
             activeSessionId = data.session_id;
             
             pc = new RTCPeerConnection(data.ice_config);
             pc.onconnectionstatechange = () => {
-                if (pc.connectionState === 'connected') document.getElementById('statusBadge').innerText = 'Connected — Speak Freely';
+                if (!pc) return;
+                if (pc.connectionState === 'connected') setVoiceStatus('connected', 'Connected — Speak Freely');
+                if (['failed', 'closed'].includes(pc.connectionState)) handleCallCleanup();
             };
             
             pc.ontrack = (ev) => { document.getElementById('audioOut').srcObject = ev.streams[0]; };
@@ -249,65 +446,222 @@
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
             
-            // Wait for ICE gathering
             if (pc.iceGatheringState !== 'complete') {
-                await new Promise((resolve) => {
-                    pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') resolve(); };
+                await new Promise((resResolve) => {
+                    pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') resResolve(); };
                 });
             }
             
+            const { sdp, type } = pc.localDescription;
             const answerRes = await fetch(`${SERVER}/session/${activeSessionId}/offer`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(pc.localDescription),
+                body: JSON.stringify({ sdp, type }),
             });
             
             const answer = await answerRes.json();
-            await pc.setRemoteDescription(answer);
+            await pc.setRemoteDescription({ sdp: answer.sdp, type: 'answer' });
             
             document.getElementById('endCallBtn').disabled = false;
         } catch (err) {
-            alert('Error: ' + err.message);
+            alert('WebRTC Initialization Error: ' + err.message);
+            setVoiceStatus('ready', 'Ready to Connect');
             document.getElementById('startCallBtn').disabled = false;
         }
+    }
+    
+    function handleCallCleanup() {
+        if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+        if (pc) { pc.close(); pc = null; }
+        document.getElementById('audioOut').srcObject = null;
+        document.getElementById('endCallBtn').disabled = true;
+        document.getElementById('startCallBtn').disabled = false;
+        setVoiceStatus('ready', 'Session Finalized');
     }
 
     async function endVoiceCall() {
         const sid = activeSessionId;
-        if(micStream) micStream.getTracks().forEach(t => t.stop());
-        if(pc) pc.close();
+        handleCallCleanup();
         document.getElementById('voiceModal').style.display = 'none';
         
+        const btn = document.getElementById('genBtn');
         const loader = document.getElementById('loader');
+        
+        const nameData = document.getElementById('cv-name').value.trim();
+        const emailData = document.getElementById('cv-email').value.trim();
+        const phoneData = document.getElementById('cv-phone').value.trim();
+        
+        document.getElementById('loaderText').textContent = "Finalizing audio transcript (please wait 3 seconds)...";
+        btn.disabled = true;
         loader.classList.add('show');
         
         try {
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            document.getElementById('loaderText').textContent = "Retrieving Aethex conversation logs...";
             const transRes = await fetch(`${SERVER}/session/${sid}/transcript`);
             const transData = await transRes.json();
+            
+            if (!transData.transcript || transData.transcript.trim() === "") {
+                throw new Error("Could not extract a definitive verbal profile from Aethex.");
+            }
+
+            document.getElementById('loaderText').textContent = "Compiling and formatting professional CV...";
+            animateSteps();
             
             const cvRes = await fetch(`${SERVER}/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    text: transData.transcript, 
-                    language: selectedLang, 
-                    name: document.getElementById('cv-name').value,
-                    email: document.getElementById('cv-email').value,
-                    phone: document.getElementById('cv-phone').value
+                    text: transData.transcript,
+                    language: selectedLang,
+                    name: nameData,
+                    email: emailData,
+                    phone: phoneData
                 })
             });
-            const cvData = await cvRes.json();
             
+            const cvData = await cvRes.json();
             if (cvData.cv) {
+                generatedCVRaw = cvData.cv;
                 document.getElementById('cvOutput').innerHTML = formatCV(cvData.cv);
                 document.getElementById('outputWrap').classList.add('show');
                 document.getElementById('resetBar').classList.add('show');
-                alert("CV Generated successfully! Service fee of " + (cvData.price || "₦300") + " applied.");
+                document.getElementById('outputWrap').scrollIntoView({ behavior: 'smooth' });
             }
-        } catch (err) { alert(err.message); } finally { loader.classList.remove('show'); }
+        } catch (err) {
+            alert(err.message);
+        } finally {
+            btn.disabled = false;
+            loader.classList.remove('show');
+            resetSteps();
+        }
+    }
+    
+    function animateSteps() {
+        let current = 2;
+        stepInterval = setInterval(() => {
+            if (current > 4) { clearInterval(stepInterval); return; }
+            document.getElementById('step' + current).classList.add('active');
+            current++;
+        }, 900);
     }
 
-    // Keep your extract, formatCV, downloadWordDoc, and resetApp functions exactly as they were.
+    function resetSteps() {
+        clearInterval(stepInterval);
+        for (let i = 1; i <= 4; i++) document.getElementById('step' + i).classList.remove('active');
+        document.getElementById('step1').classList.add('active');
+    }
+
+    function extract(text, tag) {
+        var openTag = '<<' + tag + '>>'; var closeTag = '<</' + tag + '>>';
+        var start = text.indexOf(openTag); var end = text.indexOf(closeTag);
+        if (start === -1 || end === -1) return '';
+        return text.substring(start + openTag.length, end).trim();
+    }
+
+    function formatCV(raw) {
+        var name = extract(raw, 'NAME') || document.getElementById('cv-name').value || '[Name]';
+        var contact = extract(raw, 'CONTACT') || `${document.getElementById('cv-email').value} | ${document.getElementById('cv-phone').value}`;
+        var summary = extract(raw, 'SUMMARY') || '';
+        var experience = extract(raw, 'EXPERIENCE') || '';
+        var education = extract(raw, 'EDUCATION') || '';
+        var skills = extract(raw, 'SKILLS') || '';
+        var cover = extract(raw, 'COVER') || '';
+        var skillTags = skills.split('|').map(s => '<span class="cv-skill-tag">' + s.trim() + '</span>').join('');
+        
+        return '<div class="cv-name">' + name + '</div>' +
+            '<div class="cv-contact">' + contact + '</div>' +
+            '<div class="cv-section-label">Professional Summary</div>' +
+            '<div class="cv-body">' + summary + '</div>' +
+            '<div class="cv-section-label">Work Experience</div>' +
+            '<div class="cv-body">' + experience + '</div>' +
+            '<div class="cv-section-label">Education</div>' +
+            '<div class="cv-body">' + education + '</div>' +
+            '<div class="cv-section-label">Skills</div>' +
+            '<div class="cv-skills-wrap">' + skillTags + '</div>' +
+            '<div class="cv-cover"><div class="cv-section-label">Cover Letter</div><div class="cv-body">' + cover + '</div></div>';
+    }
+
+    async function generateCV() {
+        var input = document.getElementById('userInput').value.trim();
+        var nameData = document.getElementById('cv-name').value.trim();
+        var emailData = document.getElementById('cv-email').value.trim();
+        var phoneData = document.getElementById('cv-phone').value.trim();
+
+        if (!nameData || !emailData || !phoneData) { 
+            alert('Please fill out your Name, Email, and Phone Number before generating your CV.'); 
+            return; 
+        }
+        if (!input && !activeSessionId) { 
+            alert('Please tell us about your experience first.'); 
+            return; 
+        }
+        
+        const btn = document.getElementById('genBtn');
+        const loader = document.getElementById('loader');
+        document.getElementById('loaderText').textContent = "Crafting your CV...";
+        btn.disabled = true; loader.classList.add('show');
+        animateSteps();
+        
+        try {
+            var response = await fetch(`${SERVER}/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    text: input, 
+                    language: selectedLang,
+                    name: nameData,
+                    email: emailData,
+                    phone: phoneData 
+                })
+            });
+            var data = await response.json();
+            if (data.cv) {
+                generatedCVRaw = data.cv;
+                document.getElementById('cvOutput').innerHTML = formatCV(data.cv);
+                document.getElementById('outputWrap').classList.add('show');
+                document.getElementById('resetBar').classList.add('show');
+                document.getElementById('outputWrap').scrollIntoView({ behavior: 'smooth' });
+            }
+        } catch (err) {
+            alert('Connection failure.');
+        } finally {
+            btn.disabled = false; loader.classList.remove('show'); resetSteps();
+        }
+    }
+
+    function copyCV() {
+        navigator.clipboard.writeText(document.getElementById('cvOutput').innerText).then(() => {
+            alert("CV copied to clipboard!");
+        });
+    }
+
+    function downloadWordDoc() {
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>VoiceCV Export</title><style>body { font-family: 'Arial', sans-serif; } .cv-name { font-size: 24pt; font-weight: bold; margin-bottom: 5pt; } .cv-contact { font-size: 11pt; color: #555; margin-bottom: 20pt; border-bottom: 1px solid #ccc; padding-bottom: 10pt; } .cv-section-label { font-size: 12pt; font-weight: bold; text-transform: uppercase; margin-top: 15pt; margin-bottom: 5pt; color: #333; } .cv-body { font-size: 11pt; line-height: 1.5; margin-bottom: 15pt; } .cv-skill-tag { display: inline-block; background: #eee; padding: 3px 8px; margin: 2px; border-radius: 3px; font-size: 10pt; }</style></head><body>";
+        const footer = "</body></html>";
+        const sourceHTML = header + document.getElementById("cvOutput").innerHTML + footer;
+        
+        const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+        const fileDownload = document.createElement("a");
+        
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = 'My_Professional_VoiceCV.doc';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+    }
+
+    function resetApp() {
+        document.getElementById('userInput').value = '';
+        document.getElementById('cv-name').value = '';
+        document.getElementById('cv-email').value = '';
+        document.getElementById('cv-phone').value = '';
+        document.getElementById('cvOutput').innerHTML = '';
+        document.getElementById('outputWrap').classList.remove('show');
+        document.getElementById('resetBar').classList.remove('show');
+        updateCount(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 </script>
 </body>
 </html>
