@@ -659,19 +659,35 @@ function loadExample() {
     }
 
     function downloadWordDoc() {
-        // Wrap the semantic CV in clean HTML for the converter
-        const header = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>VoiceCV Export</title><style>body { font-family: 'Arial', sans-serif; color: #000; }</style></head><body>";
-        const footer = "</body></html>";
-        const sourceHTML = header + document.getElementById("cvOutput").innerHTML + footer;
+        const cvContent = document.getElementById("cvOutput").innerHTML;
         
-        // Convert to a true modern .docx Blob
-        const converted = htmlDocx.asBlob(sourceHTML);
+        // This is the "Word-Safe" HTML wrapper
+        const header = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    body { font-family: 'Calibri', sans-serif; font-size: 12pt; }
+                    h1 { font-size: 24pt; margin-bottom: 10px; }
+                    h2 { font-size: 16pt; border-bottom: 1px solid #000; margin-top: 20px; }
+                    p { margin: 5px 0; }
+                    ul { margin: 5px 0; padding-left: 20px; }
+                </style>
+            </head>
+            <body>`;
+        const footer = "</body></html>";
+        
+        const sourceHTML = header + cvContent + footer;
+        
+        // Convert
+        const converted = htmlDocx.asBlob(sourceHTML, { orientation: 'portrait', margins: { top: 720 } });
         
         // Trigger download
         const fileDownload = document.createElement("a");
-        document.body.appendChild(fileDownload);
         fileDownload.href = URL.createObjectURL(converted);
-        fileDownload.download = 'My_Professional_VoiceCV.docx'; 
+        fileDownload.download = 'My_Professional_VoiceCV.docx';
+        document.body.appendChild(fileDownload);
         fileDownload.click();
         document.body.removeChild(fileDownload);
     }
